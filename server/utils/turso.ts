@@ -10,9 +10,9 @@ let client: Client | null = null;
 
 export function getTursoClient(): Client {
   if (!client) {
-    // Support both import.meta.env (Vite) and process.env (Node.js)
-    const url = (process.env.TURSO_DB_URL || (typeof import.meta !== 'undefined' && (import.meta.env as Record<string, string>)?.TURSO_DB_URL)) as string | undefined;
-    const authToken = (process.env.TURSO_AUTH_TOKEN || (typeof import.meta !== 'undefined' && (import.meta.env as Record<string, string>)?.TURSO_AUTH_TOKEN)) as string | undefined;
+    // Use process.env - works for both Turso and local development
+    const url = process.env.TURSO_DB_URL;
+    const authToken = process.env.TURSO_AUTH_TOKEN;
 
     if (url && authToken) {
       // Use Turso remote database

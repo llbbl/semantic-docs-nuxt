@@ -66,6 +66,9 @@ importers:
       '@vue/test-utils':
         specifier: ^2.4.6
         version: 2.4.6
+      h3:
+        specifier: ^1.15.4
+        version: 1.15.4
       happy-dom:
         specifier: ^20.0.1
         version: 20.0.1

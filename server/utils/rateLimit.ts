@@ -3,6 +3,9 @@
  * For production with multiple servers, use Redis or edge rate limiting
  */
 
+import type { H3Event } from 'h3';
+import { getRequestHeader } from 'h3';
+
 interface RateLimitEntry {
   count: number;
   resetTime: number;
@@ -38,13 +41,13 @@ export interface RateLimitResult {
 }
 
 /**
- * Get client identifier from request
+ * Get client identifier from H3 event
  */
-function getClientId(request: Request): string {
+function getClientId(event: H3Event): string {
   // Try to get IP from various headers (depending on deployment platform)
-  const forwarded = request.headers.get('x-forwarded-for');
-  const realIp = request.headers.get('x-real-ip');
-  const cfConnectingIp = request.headers.get('cf-connecting-ip');
+  const forwarded = getRequestHeader(event, 'x-forwarded-for');
+  const realIp = getRequestHeader(event, 'x-real-ip');
+  const cfConnectingIp = getRequestHeader(event, 'cf-connecting-ip');
 
   const ip =
     cfConnectingIp || realIp || forwarded?.split(',')[0]?.trim() || 'unknown';
@@ -56,10 +59,10 @@ function getClientId(request: Request): string {
  * Check if request is rate limited
  */
 export function checkRateLimit(
-  request: Request,
+  event: H3Event,
   config: RateLimitConfig = { maxRequests: 10, windowSeconds: 60 },
 ): RateLimitResult {
-  const clientId = getClientId(request);
+  const clientId = getClientId(event);
   const now = Date.now();
   const windowMs = config.windowSeconds * 1000;
 

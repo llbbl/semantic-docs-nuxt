@@ -19,6 +19,7 @@ export default defineConfig({
     server: {
       deps: {
         inline: ['@libsql/client'],
+        external: ['h3'],
       },
     },
     coverage: {

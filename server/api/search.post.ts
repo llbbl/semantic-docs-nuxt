@@ -9,11 +9,8 @@ import { checkRateLimit, createRateLimitHeaders } from '../utils/rateLimit';
 import { getTursoClient } from '../utils/turso';
 
 export default defineEventHandler(async (event) => {
-  // Convert H3 event to Request for rate limiting
-  const request = event.node.req as unknown as Request;
-
   // Rate limiting: 20 requests per minute per IP
-  const rateLimitResult = checkRateLimit(request, {
+  const rateLimitResult = checkRateLimit(event, {
     maxRequests: 20,
     windowSeconds: 60,
   });
