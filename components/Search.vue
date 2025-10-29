@@ -4,7 +4,7 @@
  * Modal dialog with ⌘K keyboard shortcut
  */
 
-import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 interface SearchResult {
   id: number;

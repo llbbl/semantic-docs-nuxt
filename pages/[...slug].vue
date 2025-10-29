@@ -4,8 +4,9 @@
  * Displays individual articles with markdown rendering
  */
 
+import { marked, type Tokens } from 'marked';
 import { ref } from 'vue';
-import { marked } from 'marked';
+import type { Article } from '../types/article';
 
 definePageMeta({
   layout: 'default',
@@ -23,7 +24,9 @@ const toggleSidebar = () => {
 };
 
 // Fetch the article from API
-const { data: article, error } = await useFetch(`/api/articles/${slug}`);
+const { data: article, error } = await useFetch<Article>(
+  `/api/articles/${slug}`,
+);
 
 if (error.value || !article.value) {
   throw createError({
@@ -35,7 +38,7 @@ if (error.value || !article.value) {
 // Configure marked to add IDs to headings and handle external links
 marked.use({
   renderer: {
-    heading({ tokens, depth }: { tokens: any; depth: number }) {
+    heading({ tokens, depth }: { tokens: Tokens.Generic[]; depth: number }) {
       const text = this.parser.parseInline(tokens);
       const id = text
         .toLowerCase()
@@ -43,7 +46,15 @@ marked.use({
         .replace(/[^\w-]/g, '');
       return `<h${depth} id="${id}">${text}</h${depth}>`;
     },
-    link({ href, title, tokens }: { href?: string; title?: string; tokens: any }) {
+    link({
+      href,
+      title,
+      tokens,
+    }: {
+      href?: string;
+      title?: string | null;
+      tokens: Tokens.Generic[];
+    }) {
       const text = this.parser.parseInline(tokens);
       const titleAttr = title ? ` title="${title}"` : '';
 
@@ -65,7 +76,7 @@ const htmlContent = await marked(article.value.content);
 const tags = article.value.tags;
 
 // Fetch all articles for sidebar from API
-const { data: articles } = await useFetch('/api/articles');
+const { data: articles } = await useFetch<Article[]>('/api/articles');
 
 useHead({
   title: article.value.title,

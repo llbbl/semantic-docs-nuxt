@@ -6,10 +6,18 @@
 
 import { onMounted } from 'vue';
 
+interface ThemeColors {
+  background: string;
+  foreground: string;
+  header: string;
+  sidebar: string;
+  toc: string;
+}
+
 // Initialize theme on mount
 onMounted(() => {
   const savedTheme = localStorage.getItem('theme') || 'dark';
-  const themes: Record<string, any> = {
+  const themes: Record<string, ThemeColors> = {
     dark: {
       background: '#1a1a1a',
       foreground: '#fafafa',

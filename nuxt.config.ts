@@ -21,7 +21,6 @@ export default defineNuxtConfig({
     },
   },
 
-
   typescript: {
     strict: true,
     typeCheck: false, // Disable type checking for faster builds during development

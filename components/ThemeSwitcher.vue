@@ -4,27 +4,27 @@
  * Allows users to switch between different color themes
  */
 
-import { ref, onMounted, computed } from 'vue';
-import { defaultTheme, type Theme, themes } from '~/config/themes';
+import { computed, onMounted, ref } from 'vue';
+import { defaultTheme, type Theme, themes } from '../config/themes';
 
 const currentTheme = ref(defaultTheme);
 const isOpen = ref(false);
 
 onMounted(() => {
   // Load theme from localStorage
-  const savedTheme = localStorage.getItem('theme') || defaultTheme;
-  currentTheme.value = savedTheme;
-  applyTheme(savedTheme);
+  const savedTheme = localStorage.getItem('theme') as string | null;
+  currentTheme.value = savedTheme || defaultTheme;
+  applyTheme(savedTheme || defaultTheme);
 });
 
 const applyTheme = (themeName: string) => {
-  const theme = themes.find((t) => t.name === themeName);
+  const theme = themes.find((t: Theme) => t.name === themeName);
   if (!theme) return;
 
   const root = document.documentElement;
   Object.entries(theme.colors).forEach(([key, value]) => {
     const cssVar = `--${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
-    root.style.setProperty(cssVar, value);
+    root.style.setProperty(cssVar, value as string);
   });
 
   localStorage.setItem('theme', themeName);
@@ -37,7 +37,9 @@ const handleThemeChange = (themeName: string) => {
 };
 
 const currentThemeLabel = computed(() => {
-  return themes.find((t) => t.name === currentTheme.value)?.label || 'Theme';
+  return (
+    themes.find((t: Theme) => t.name === currentTheme.value)?.label || 'Theme'
+  );
 });
 </script>
 

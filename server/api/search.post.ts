@@ -5,11 +5,8 @@
 
 import { search } from '@logan/libsql-search';
 import { logger } from '@logan/logger';
+import { checkRateLimit, createRateLimitHeaders } from '../utils/rateLimit';
 import { getTursoClient } from '../utils/turso';
-import {
-  checkRateLimit,
-  createRateLimitHeaders,
-} from '../utils/rateLimit';
 
 export default defineEventHandler(async (event) => {
   // Convert H3 event to Request for rate limiting
@@ -32,16 +29,14 @@ export default defineEventHandler(async (event) => {
   }
 
   if (!rateLimitResult.allowed) {
+    const retryAfterSeconds = Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000);
     setResponseStatus(event, 429);
-    setResponseHeader(
-      event,
-      'Retry-After',
-      Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000).toString(),
-    );
+    // Retry-After header accepts number of seconds
+    setResponseHeader(event, 'Retry-After', retryAfterSeconds);
     return {
       error: 'Too many requests',
       message: 'Rate limit exceeded. Please try again later.',
-      retryAfter: Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000),
+      retryAfter: retryAfterSeconds,
     };
   }
 
@@ -64,7 +59,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Limit max results to prevent excessive database queries
-    const sanitizedLimit = Math.min(Math.max(1, limit), 20);
+    const sanitizedLimit = Math.min(Math.max(1, Number(limit) || 10), 20);
 
     const client = getTursoClient();
 

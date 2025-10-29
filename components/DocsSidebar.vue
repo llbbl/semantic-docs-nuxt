@@ -4,18 +4,8 @@
  * Collapsible navigation populated from Turso database
  */
 
-import { ref, computed } from 'vue';
-
-interface Article {
-  id: number;
-  title: string;
-  slug: string;
-  folder: string;
-  content: string;
-  tags: string[];
-  created_at: string;
-  updated_at: string;
-}
+import { computed, ref } from 'vue';
+import type { Article } from '../types/article';
 
 interface Props {
   articles: Article[];
@@ -64,7 +54,7 @@ const toggleFolder = (folder: string) => {
 // Check if link is active
 const isActive = (slug: string) => {
   const href = `/content/${slug}`;
-  return route.path === href || route.path.startsWith(href + '/');
+  return route.path === href || route.path.startsWith(`${href}/`);
 };
 </script>
 

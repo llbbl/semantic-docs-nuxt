@@ -62,7 +62,7 @@ jobs:
         run: pnpm install
 
       - name: Check TypeScript
-        run: pnpm exec tsc --noEmit
+        run: pnpm exec nuxi typecheck
 
       - name: Run Biome linter
         run: pnpm lint

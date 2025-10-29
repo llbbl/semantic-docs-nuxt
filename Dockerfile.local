@@ -40,29 +40,29 @@ COPY package.json pnpm-lock.yaml* ./
 RUN pnpm install --prod --no-frozen-lockfile
 
 # Copy built application and local.db
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/local.db ./local.db
 
 # Create non-root user
 RUN groupadd -g 1001 nodejs && \
-    useradd -r -u 1001 -g nodejs astro
+    useradd -r -u 1001 -g nodejs nuxt
 
 # Change ownership
-RUN chown -R astro:nodejs /app
+RUN chown -R nuxt:nodejs /app
 
 # Switch to non-root user
-USER astro
+USER nuxt
 
 # Expose port
-EXPOSE 4321
+EXPOSE 3000
 
 # Set environment variables
 ENV HOST=0.0.0.0
-ENV PORT=4321
+ENV PORT=3000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:4321/', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+  CMD node -e "require('http').get('http://localhost:3000/', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
 # Start the server
-CMD ["node", "./dist/server/entry.mjs"]
+CMD ["node", ".output/server/index.mjs"]

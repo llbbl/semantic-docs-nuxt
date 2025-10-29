@@ -4,7 +4,7 @@
  * Automatically generated from page headings
  */
 
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 
 interface TocItem {
   id: string;

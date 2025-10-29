@@ -5,6 +5,7 @@
  */
 
 import { ref } from 'vue';
+import type { Article } from '../types/article';
 
 definePageMeta({
   layout: 'default',
@@ -27,7 +28,7 @@ const toggleSidebar = () => {
 };
 
 // Fetch all articles for sidebar from API
-const { data: articles } = await useFetch('/api/articles');
+const { data: articles } = await useFetch<Article[]>('/api/articles');
 </script>
 
 <template>
