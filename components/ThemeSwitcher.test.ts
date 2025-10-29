@@ -1,7 +1,7 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
-import ThemeSwitcher from './ThemeSwitcher.vue';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { themes } from '../config/themes';
+import ThemeSwitcher from './ThemeSwitcher.vue';
 
 // Mock localStorage
 const localStorageMock = (() => {

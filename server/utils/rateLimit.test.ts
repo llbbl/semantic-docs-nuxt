@@ -1,5 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { H3Event } from 'h3';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { checkRateLimit, createRateLimitHeaders } from './rateLimit';
 
 // Mock H3 event creator

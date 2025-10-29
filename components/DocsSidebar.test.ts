@@ -1,7 +1,7 @@
-import { describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
-import DocsSidebar from './DocsSidebar.vue';
+import { describe, expect, it, vi } from 'vitest';
 import type { Article } from '../types/article';
+import DocsSidebar from './DocsSidebar.vue';
 
 const mockArticles: Article[] = [
   {
@@ -83,7 +83,7 @@ describe('DocsSidebar', () => {
     expect(Object.keys(folders)).toContain('getting-started');
     expect(Object.keys(folders)).toContain('api');
     expect(folders['getting-started']).toHaveLength(2);
-    expect(folders['api']).toHaveLength(1);
+    expect(folders.api).toHaveLength(1);
   });
 
   it('formats folder names correctly', () => {
@@ -101,7 +101,9 @@ describe('DocsSidebar', () => {
       },
     });
 
-    expect(wrapper.vm.formatFolderName('getting-started')).toBe('Getting Started');
+    expect(wrapper.vm.formatFolderName('getting-started')).toBe(
+      'Getting Started',
+    );
     expect(wrapper.vm.formatFolderName('api')).toBe('Api');
     expect(wrapper.vm.formatFolderName('root')).toBe('Documentation');
   });

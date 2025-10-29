@@ -31,6 +31,8 @@
     "postinstall": "nuxt prepare",
     "db:init": "tsx --env-file=.env scripts/init-db.ts",
     "db:init:local": "tsx scripts/init-db.ts",
+    "db:check": "tsx --env-file=.env scripts/check-db.ts",
+    "db:check:local": "tsx scripts/check-db.ts",
     "index": "tsx --env-file=.env scripts/index-content.ts",
     "index:local": "tsx scripts/index-content.ts",
     "test": "vitest",

@@ -26,7 +26,9 @@ export default defineEventHandler(async (event) => {
   }
 
   if (!rateLimitResult.allowed) {
-    const retryAfterSeconds = Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000);
+    const retryAfterSeconds = Math.ceil(
+      (rateLimitResult.resetTime - Date.now()) / 1000,
+    );
     setResponseStatus(event, 429);
     // Retry-After header accepts number of seconds
     setResponseHeader(event, 'Retry-After', retryAfterSeconds);

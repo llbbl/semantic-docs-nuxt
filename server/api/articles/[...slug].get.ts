@@ -5,14 +5,17 @@ import { getArticleBySlug } from '@logan/libsql-search';
 import { getTursoClient } from '../../utils/turso';
 
 export default defineEventHandler(async (event) => {
-  const slug = getRouterParam(event, 'slug');
+  const slugParam = getRouterParam(event, 'slug');
 
-  if (!slug) {
+  if (!slugParam) {
     throw createError({
       statusCode: 400,
       message: 'Slug is required',
     });
   }
+
+  // Join slug segments with /
+  const slug = slugParam;
 
   const client = getTursoClient();
   const article = await getArticleBySlug(client, slug);

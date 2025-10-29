@@ -5,7 +5,7 @@
  */
 
 import { marked, type Tokens } from 'marked';
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import type { Article } from '../types/article';
 
 definePageMeta({
@@ -13,27 +13,17 @@ definePageMeta({
 });
 
 const route = useRoute();
-const slug = Array.isArray(route.params.slug)
-  ? route.params.slug.join('/')
-  : route.params.slug;
+const slug = computed(() =>
+  Array.isArray(route.params.slug)
+    ? route.params.slug.join('/')
+    : route.params.slug,
+);
 
 const sidebarOpen = ref(false);
 
 const toggleSidebar = () => {
   sidebarOpen.value = !sidebarOpen.value;
 };
-
-// Fetch the article from API
-const { data: article, error } = await useFetch<Article>(
-  `/api/articles/${slug}`,
-);
-
-if (error.value || !article.value) {
-  throw createError({
-    statusCode: 404,
-    message: 'Article not found',
-  });
-}
 
 // Configure marked to add IDs to headings and handle external links
 marked.use({
@@ -69,24 +59,50 @@ marked.use({
   },
 });
 
-// Convert markdown to HTML
-const htmlContent = await marked(article.value.content);
+// Fetch the article from API
+const {
+  data: article,
+  error,
+  refresh,
+} = await useFetch<Article>(() => `/api/articles/${slug.value}`, {
+  key: () => `article-${slug.value}`,
+  watch: false, // We'll manually watch below
+});
 
-// Parse tags
-const tags = article.value.tags;
+// Watch slug changes and refresh data
+watch(slug, () => {
+  refresh();
+});
+
+if (error.value || !article.value) {
+  throw createError({
+    statusCode: 404,
+    message: 'Article not found',
+  });
+}
+
+// Convert markdown to HTML reactively
+const htmlContent = computed(() => {
+  if (!article.value) return '';
+  return marked.parse(article.value.content);
+});
+
+// Parse tags reactively
+const tags = computed(() => article.value?.tags || []);
 
 // Fetch all articles for sidebar from API
 const { data: articles } = await useFetch<Article[]>('/api/articles');
 
-useHead({
-  title: article.value.title,
+// Update head metadata reactively
+useHead(() => ({
+  title: article.value?.title || 'Documentation',
   meta: [
     {
       name: 'description',
-      content: article.value.title,
+      content: article.value?.title || '',
     },
   ],
-});
+}));
 </script>
 
 <template>
