@@ -48,7 +48,7 @@
     "astro": "^5.14.5",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
-    "lucide-react": "^0.546.0",
+    "lucide-react": "^0.548.0",
     "marked": "^16.4.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
