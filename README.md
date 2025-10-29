@@ -2,16 +2,16 @@
 
 Documentation theme with semantic vector search.
 
-A beautiful, dark-mode documentation theme powered by [libsql-search](https://github.com/llbbl/libsql-search) for semantic search capabilities. Perfect for technical documentation, knowledge bases, and content-heavy sites.
+A beautiful, multi-theme documentation site built with Nuxt 3 and powered by [libsql-search](https://github.com/llbbl/libsql-search) for semantic search capabilities. Perfect for technical documentation, knowledge bases, and content-heavy sites.
 
 ## Features
 
-- 🎨 **Modern Dark UI** - Sleek design with OKLCH colors
-- 🔍 **Semantic Search** - AI-powered vector search in the header
+- 🎨 **Multi-Theme UI** - 6 beautiful themes with CSS variables
+- 🔍 **Semantic Search** - AI-powered vector search with ⌘K shortcut
 - 📱 **Responsive** - Mobile-friendly with collapsible sidebar
 - 📑 **Auto TOC** - Table of contents generated from headings
-- 🚀 **Edge-Ready** - Optimized for Turso's global database
-- ⚡ **Fast** - Static generation with server-rendered search
+- 🚀 **Edge-Ready** - Optimized for Turso's global database with Nitro
+- ⚡ **Fast** - Server-side rendering with Vue 3
 - 🎯 **Type-Safe** - Full TypeScript support
 
 ## Quick Start
@@ -108,27 +108,28 @@ This will:
 pnpm dev
 ```
 
-Visit `http://localhost:4321` to see your docs!
+Visit `http://localhost:3000` to see your docs!
 
 ## Customization
 
 ### Change Site Title
 
-Edit `src/components/DocsHeader.astro`:
+Edit `components/DocsHeader.vue`:
 
-```astro
+```vue
 <span class="font-sans">Your Site Name</span>
 ```
 
-And `src/layouts/DocsLayout.astro`:
+And `layouts/default.vue`:
 
-```astro
-const { title = "Your Site Name", description = "Your description" } = Astro.props;
+```vue
+const title = "Your Site Name"
+const description = "Your description"
 ```
 
 ### Customize Colors
 
-Edit `src/styles/global.css` to change the color scheme. The theme uses OKLCH colors for smooth gradients and perceptual uniformity.
+The theme includes 6 pre-built color themes (dark, light, ocean, forest, sunset, purple). To customize or add themes, edit `config/themes.ts` and `assets/css/main.css`. Themes use CSS variables for easy customization.
 
 ### Change Embedding Provider
 
@@ -150,28 +151,33 @@ OPENAI_API_KEY=your-key
 
 ```
 semantic-docs/
-├── src/
-│   ├── components/
-│   │   ├── DocsHeader.astro    # Header with search
-│   │   ├── DocsSidebar.astro   # Navigation sidebar
-│   │   ├── DocsToc.tsx         # Table of contents
-│   │   └── Search.tsx          # Search component
-│   ├── layouts/
-│   │   └── DocsLayout.astro    # Main layout
-│   ├── lib/
-│   │   └── turso.ts            # Database client
-│   ├── pages/
-│   │   ├── api/
-│   │   │   └── search.json.ts  # Search API endpoint
-│   │   ├── content/
-│   │   │   └── [...slug].astro # Article pages
-│   │   └── index.astro         # Home page
-│   └── styles/
-│       └── global.css          # Global styles
+├── components/
+│   ├── DocsHeader.vue          # Header with search
+│   ├── DocsSidebar.vue         # Navigation sidebar
+│   ├── DocsToc.vue             # Table of contents
+│   ├── Search.vue              # Search modal
+│   └── ThemeSwitcher.vue       # Theme selector
+├── layouts/
+│   └── default.vue             # Main layout
+├── pages/
+│   ├── [...slug].vue           # Article pages (catch-all)
+│   └── index.vue               # Home page
+├── server/
+│   ├── api/
+│   │   ├── search.post.ts      # Search API endpoint
+│   │   ├── articles.get.ts     # All articles API
+│   │   └── articles/[slug].get.ts # Single article API
+│   └── utils/
+│       ├── turso.ts            # Database client
+│       ├── validation.ts       # Input validation
+│       └── rateLimit.ts        # Rate limiting
 ├── scripts/
-│   └── index-content.js        # Indexing script
+│   ├── index-content.ts        # Indexing script
+│   └── init-db.ts              # Database initialization
+├── config/
+│   └── themes.ts               # Theme configurations
 ├── content/                    # Your markdown files
-├── astro.config.mjs
+├── nuxt.config.ts
 ├── package.json
 └── .env                        # Your credentials
 ```
@@ -260,7 +266,7 @@ pnpm preview
 ### Search not working
 
 1. Check `.env` file has correct credentials
-2. Ensure `output: 'server'` in `astro.config.mjs`
+2. Verify Nuxt server is running with SSR enabled
 3. Verify content is indexed: run `pnpm index`
 
 ### Content not showing
@@ -282,11 +288,12 @@ GEMINI_API_KEY=your-key
 
 ## Tech Stack
 
-- **Framework**: [Astro](https://astro.build) 5
+- **Framework**: [Nuxt](https://nuxt.com) 3
+- **UI Framework**: [Vue](https://vuejs.org) 3
 - **Search**: [libsql-search](https://github.com/llbbl/libsql-search)
 - **Database**: [Turso](https://turso.tech) (libSQL)
+- **Backend**: [Nitro](https://nitro.unjs.io) (Nuxt's server engine)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com) 4
-- **UI**: React islands for interactivity
 - **Embeddings**: Xenova, Gemini, or OpenAI
 
 ## License

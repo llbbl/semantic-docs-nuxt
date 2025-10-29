@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**semantic-docs** is an Astro-based documentation theme with semantic vector search powered by libsql-search. It combines static site generation with server-rendered search using Turso (libSQL) for edge-optimized semantic search capabilities.
+**semantic-docs** is a Nuxt 3 documentation theme with semantic vector search powered by libsql-search. It combines server-side rendering with Vue components and Nitro API routes using Turso (libSQL) for edge-optimized semantic search capabilities.
 
 ## Essential Commands
 
@@ -13,7 +13,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Install dependencies
 pnpm install
 
-# Start dev server (runs on http://localhost:4321)
+# Start dev server (runs on http://localhost:3000)
 pnpm dev
 
 # Build for production
@@ -53,18 +53,19 @@ pnpm format     # Format all files
 ### Content Flow
 1. **Markdown → Database**: Content in `./content` is indexed into Turso via `scripts/index-content.ts`
 2. **libsql-search**: Handles embedding generation (local/Gemini/OpenAI), vector storage, and semantic search
-3. **Static Generation**: Article pages are pre-rendered at build time using `getStaticPaths()`
-4. **Server Search**: Search API runs server-side at `/api/search.json` (requires `output: 'server'` with Node.js adapter)
+3. **Server-Side Rendering**: Article pages are server-rendered using Nuxt's dynamic routing
+4. **Server API**: Search API runs on Nitro backend at `/api/search`
 
 ### Key Components
-- **Search.tsx**: Client-side search UI with debounced API calls (300ms), displays results in dropdown
-- **DocsHeader.astro**: Header with embedded search component
-- **DocsSidebar.astro**: Navigation sidebar built from folder structure in database
-- **DocsToc.tsx**: Auto-generated table of contents from article headings
-- **[...slug].astro**: Dynamic article pages, uses `getStaticPaths()` to pre-render all articles
+- **Search.vue**: Client-side search UI with debounced API calls (300ms), displays results in modal
+- **DocsHeader.vue**: Header with embedded search component
+- **DocsSidebar.vue**: Navigation sidebar built from folder structure in database
+- **DocsToc.vue**: Auto-generated table of contents from article headings
+- **ThemeSwitcher.vue**: Multi-theme selector with 6 color themes
+- **pages/[...slug].vue**: Dynamic article pages using Nuxt's catch-all routing
 
 ### Database Integration
-- **src/lib/turso.ts**: Singleton client wrapper, re-exports libsql-search utilities
+- **server/utils/turso.ts**: Singleton client wrapper, re-exports libsql-search utilities
 - **scripts/init-db.ts**: Initializes database schema with vector search support
 - **scripts/index-content.ts**: Indexes markdown files, creates table with 768-dimension vectors
 - All content queries use functions from libsql-search: `getAllArticles()`, `getArticleBySlug()`, `getArticlesByFolder()`, `getFolders()`
@@ -80,14 +81,14 @@ Optional in `.env`:
 
 ## Critical Configuration
 
-### Server-Side Rendering + Node.js Adapter Required
-The search API endpoint requires SSR with a Node.js adapter. The configuration uses:
-- `output: 'server'` - Enables server-side rendering
-- `adapter: node()` - Required for deployment (from @astrojs/node package)
-- Article pages marked with `prerender: true` are pre-rendered as static HTML
-- Search API marked with `prerender: false` runs server-side
+### Nuxt Server-Side Rendering
+The search API endpoint runs on Nuxt's Nitro server. The configuration uses:
+- Nuxt 3's built-in SSR capabilities with Nitro backend
+- API routes in `server/api/` directory auto-registered as endpoints
+- Server utilities in `server/utils/` for database and validation logic
+- Pages are server-rendered by default with Vue 3
 
-**Never** remove the adapter or change output to 'static', or the search API will break.
+The Nitro server handles all API requests and provides edge-ready deployment options.
 
 ### Content Structure
 Content in `./content` must follow this pattern:
@@ -105,11 +106,11 @@ tags: [tag1, tag2]
 ---
 ```
 
-### Selective Pre-rendering
-- Article pages (`/content/[...slug].astro`): Pre-rendered static at build time (`export const prerender = true`)
-- Search API (`/api/search.json.ts`): Server-rendered on-demand (`export const prerender = false`)
-- This approach provides fast static pages with dynamic server-side search
-- Uses `getStaticPaths()` to generate all article pages at build time
+### Routing
+- Article pages (`pages/[...slug].vue`): Dynamic catch-all route for all article paths
+- Search API (`server/api/search.post.ts`): Nitro API endpoint handling POST requests
+- Articles API (`server/api/articles.get.ts`): Returns all articles for sidebar navigation
+- Individual article API (`server/api/articles/[slug].get.ts`): Returns single article by slug
 
 ## Integration Points
 
@@ -117,7 +118,7 @@ tags: [tag1, tag2]
 The project relies heavily on libsql-search. When modifying search behavior:
 1. Check libsql-search documentation for available options
 2. Update `scripts/index-content.ts` for indexing changes
-3. Update `src/pages/api/search.json.ts` for search query changes
+3. Update `server/api/search.post.ts` for search query changes
 4. Maintain embedding dimension consistency (768) across indexing and search
 
 ### Customizing Embedding Providers
