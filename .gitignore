@@ -1,9 +1,10 @@
 # Dependencies
 node_modules/
 
-# Build outputs
+# Nuxt build outputs
+.nuxt/
+.output/
 dist/
-.astro/
 
 # Environment variables
 .env
@@ -35,6 +36,7 @@ Thumbs.db
 # Temporary files
 *.tmp
 .cache/
+/COMMIT_MESSAGE.md
 
 # Local database files
 local.db
@@ -43,3 +45,7 @@ local.db-wal
 *.db
 *.db-shm
 *.db-wal
+
+# Nitro
+.nitro/
+
