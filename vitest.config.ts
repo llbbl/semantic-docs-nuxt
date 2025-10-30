@@ -6,6 +6,7 @@ import { defineConfig } from 'vitest/config';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  // @ts-expect-error - Vue plugin type mismatch with Vite 7
   plugins: [vue()],
   resolve: {
     alias: {

@@ -36,14 +36,22 @@ async function checkDatabase() {
     console.log(`📚 Found ${result.rows.length} articles:\n`);
 
     // Display articles grouped by folder
-    const articlesByFolder: Record<string, unknown[]> = {};
+    interface ArticleRow {
+      slug: string;
+      title: string;
+      content: string;
+      folder: string;
+      tags: string;
+    }
+
+    const articlesByFolder: Record<string, ArticleRow[]> = {};
 
     for (const row of result.rows) {
       const folder = row.folder as string;
       if (!articlesByFolder[folder]) {
         articlesByFolder[folder] = [];
       }
-      articlesByFolder[folder].push(row);
+      articlesByFolder[folder].push(row as unknown as ArticleRow);
     }
 
     for (const [folder, articles] of Object.entries(articlesByFolder)) {
@@ -51,9 +59,7 @@ async function checkDatabase() {
       for (const article of articles) {
         console.log(`   - ${article.slug}`);
         console.log(`     Title: ${article.title}`);
-        console.log(
-          `     Content length: ${(article.content as string).length} chars`,
-        );
+        console.log(`     Content length: ${article.content.length} chars`);
         console.log(`     Tags: ${article.tags || '[]'}`);
       }
     }

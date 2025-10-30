@@ -79,6 +79,7 @@ describe('DocsSidebar', () => {
       },
     });
 
+    // @ts-expect-error - accessing internal computed property for testing
     const folders = wrapper.vm.articlesByFolder;
     expect(Object.keys(folders)).toContain('getting-started');
     expect(Object.keys(folders)).toContain('api');

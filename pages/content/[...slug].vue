@@ -6,7 +6,7 @@
 
 import { marked, type Tokens } from 'marked';
 import { computed, ref, watch } from 'vue';
-import type { Article } from '../types/article';
+import type { Article } from '../../types/article';
 
 definePageMeta({
   layout: 'default',

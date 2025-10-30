@@ -42,23 +42,27 @@ describe('ThemeSwitcher', () => {
     localStorageMock.setItem('theme', 'ocean');
     const wrapper = mount(ThemeSwitcher);
 
+    // @ts-expect-error - accessing internal ref for testing
     expect(wrapper.vm.currentTheme).toBe('ocean');
   });
 
   it('defaults to dark theme when no saved theme', () => {
     const wrapper = mount(ThemeSwitcher);
+    // @ts-expect-error - accessing internal ref for testing
     expect(wrapper.vm.currentTheme).toBe('dark');
   });
 
   it('closes dropdown when theme is selected', async () => {
     const wrapper = mount(ThemeSwitcher);
     await wrapper.find('button').trigger('click');
+    // @ts-expect-error - accessing internal ref for testing
     expect(wrapper.vm.isOpen).toBe(true);
 
     // Find and click a theme button (skip the first button which is the toggle)
     const themeButtons = wrapper.findAll('button');
     await themeButtons[1].trigger('click');
 
+    // @ts-expect-error - accessing internal ref for testing
     expect(wrapper.vm.isOpen).toBe(false);
   });
 });
