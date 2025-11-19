@@ -23,6 +23,7 @@
     "url": "https://github.com/llbbl/semantic-docs/issues"
   },
   "homepage": "https://github.com/llbbl/semantic-docs#readme",
+  "packageManager": "pnpm@10.9.0",
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",

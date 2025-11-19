@@ -1,6 +1,6 @@
 # Dependencies
 node_modules/
-pnpm-lock.yaml
+# pnpm-lock.yaml must NOT be ignored (needed for --frozen-lockfile)
 
 # Build output
 dist/
