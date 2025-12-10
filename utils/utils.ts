@@ -68,9 +68,9 @@ export function extractHeadings(
   let match;
   while ((match = headingRegex.exec(html)) !== null) {
     headings.push({
-      level: parseInt(match[1], 10),
-      id: match[2],
-      text: match[3].replace(/<[^>]*>/g, '').trim(),
+      level: parseInt(match[1]!, 10),
+      id: match[2]!,
+      text: match[3]!.replace(/<[^>]*>/g, '').trim(),
     });
   }
 

@@ -28,7 +28,7 @@ const toggleSidebar = () => {
 // Configure marked to add IDs to headings and handle external links
 marked.use({
   renderer: {
-    heading({ tokens, depth }: { tokens: Tokens.Generic[]; depth: number }) {
+    heading(this: any, { tokens, depth }: { tokens: Tokens.Generic[]; depth: number }): string {
       const text = this.parser.parseInline(tokens);
       const id = text
         .toLowerCase()
@@ -36,15 +36,18 @@ marked.use({
         .replace(/[^\w-]/g, '');
       return `<h${depth} id="${id}">${text}</h${depth}>`;
     },
-    link({
-      href,
-      title,
-      tokens,
-    }: {
-      href?: string;
-      title?: string | null;
-      tokens: Tokens.Generic[];
-    }) {
+    link(
+      this: any,
+      {
+        href,
+        title,
+        tokens,
+      }: {
+        href?: string;
+        title?: string | null;
+        tokens: Tokens.Generic[];
+      }
+    ): string {
       const text = this.parser.parseInline(tokens);
       const titleAttr = title ? ` title="${title}"` : '';
 
@@ -76,7 +79,7 @@ watch(slug, () => {
 
 if (error.value || !article.value) {
   throw createError({
-    statusCode: 404,
+    status: 404,
     message: 'Article not found',
   });
 }
@@ -90,8 +93,12 @@ const htmlContent = computed(() => {
 // Parse tags reactively
 const tags = computed(() => article.value?.tags || []);
 
+// Unwrap article for template usage
+const currentArticle = computed(() => article.value!);
+
 // Fetch all articles for sidebar from API
-const { data: articles } = await useFetch<Article[]>('/api/articles');
+const { data: articlesData } = await useFetch<Article[]>('/api/articles');
+const articles = computed(() => articlesData.value || []);
 
 // Update head metadata reactively
 useHead(() => ({
@@ -110,7 +117,7 @@ useHead(() => ({
     <DocsHeader @toggle-sidebar="toggleSidebar" />
 
     <div class="flex">
-      <DocsSidebar v-if="articles" :articles="articles" :is-open="sidebarOpen" />
+      <DocsSidebar v-if="articles.length > 0" :articles="articles" :is-open="sidebarOpen" />
 
       <main class="flex-1 lg:pl-64 xl:pr-64 min-w-0 relative z-10">
         <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
@@ -120,7 +127,7 @@ useHead(() => ({
           >
             <header class="mb-8 pb-6 border-b border-border">
               <h1 class="text-4xl font-bold tracking-tight text-balance mb-4">
-                {{ article.title }}
+                {{ currentArticle.title }}
               </h1>
               <div v-if="tags.length > 0" class="flex flex-wrap gap-2">
                 <span
@@ -139,7 +146,7 @@ useHead(() => ({
               <p class="text-sm text-muted-foreground">
                 Last updated:
                 {{
-                  new Date(article.updated_at).toLocaleDateString('en-US', {
+                  new Date(currentArticle.updated_at).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',

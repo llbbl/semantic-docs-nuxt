@@ -119,7 +119,7 @@ const groupedResults = computed(() => {
       if (!acc[result.folder]) {
         acc[result.folder] = [];
       }
-      acc[result.folder].push(result);
+      acc[result.folder]!.push(result);
       return acc;
     },
     {} as Record<string, SearchResult[]>,

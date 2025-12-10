@@ -4,7 +4,7 @@
  * Welcome page with overview of the documentation
  */
 
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import type { Article } from '../types/article';
 
 definePageMeta({
@@ -28,7 +28,8 @@ const toggleSidebar = () => {
 };
 
 // Fetch all articles for sidebar from API
-const { data: articles } = await useFetch<Article[]>('/api/articles');
+const { data: articlesData } = await useFetch<Article[]>('/api/articles');
+const articles = computed(() => articlesData.value || []);
 </script>
 
 <template>
@@ -36,7 +37,7 @@ const { data: articles } = await useFetch<Article[]>('/api/articles');
     <DocsHeader @toggle-sidebar="toggleSidebar" />
 
     <div class="flex">
-      <DocsSidebar v-if="articles" :articles="articles" :is-open="sidebarOpen" />
+      <DocsSidebar v-if="articles.length > 0" :articles="articles" :is-open="sidebarOpen" />
 
       <main class="flex-1 lg:pl-64 xl:pr-64 min-w-0 relative z-10">
         <div class="mx-auto max-w-4xl px-6 py-8 lg:px-8">
