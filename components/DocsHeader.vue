@@ -66,7 +66,7 @@ const handleToggleSidebar = () => {
           <nav class="flex items-center gap-2">
             <ThemeSwitcher />
             <a
-              href="https://github.com/llbbl/semantic-docs"
+              href="https://github.com/llbbl/semantic-docs-nuxt"
               class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-9 w-9 p-2"
               aria-label="GitHub"
               target="_blank"

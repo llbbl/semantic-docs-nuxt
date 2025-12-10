@@ -7,7 +7,7 @@ tags: [astro, theme, documentation, semantic-search]
 
 Semantic Docs is a modern documentation theme built with Astro, featuring semantic vector search powered by libSQL and Turso. It combines static site generation with server-rendered search capabilities for a fast, searchable documentation experience.
 
-**Reference Implementation**: Check out [Astro Vault](https://vault.llbbl.com) ([source](https://github.com/llbbl/astro-vault)) to see this theme in action with extensive documentation content.
+**Reference Implementation**: Check out [Astro Vault](https://vault.llbbl.com) ([source](https://github.com/llbbl/astro-vault)) to see a version of this base theme in action with extensive documentation content.
 
 ## Key Features
 
@@ -212,6 +212,6 @@ docker run -p 4321:4321 \
 ## Links
 
 - **Live Demo**: [vault.llbbl.com](https://vault.llbbl.com)
-- **GitHub**: [llbbl/semantic-docs](https://github.com/llbbl/semantic-docs)
+- **GitHub**: [llbbl/semantic-docs-nuxt](https://github.com/llbbl/semantic-docs-nuxt)
 - **Astro**: [astro.build](https://astro.build)
 - **Turso**: [turso.tech](https://turso.tech)
