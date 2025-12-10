@@ -136,16 +136,16 @@ describe('extractHeadings', () => {
     const headings = extractHeadings(html);
 
     expect(headings).toHaveLength(3);
-    expect(headings[0]!.text).toBe('First');
-    expect(headings[1]!.text).toBe('Second');
-    expect(headings[2]!.text).toBe('Third');
+    expect(headings[0]?.text).toBe('First');
+    expect(headings[1]?.text).toBe('Second');
+    expect(headings[2]?.text).toBe('Third');
   });
 
   it('should strip HTML tags from heading text', () => {
     const html = '<h2 id="code"><code>const</code> variable</h2>';
     const headings = extractHeadings(html);
 
-    expect(headings[0]!.text).toBe('const variable');
+    expect(headings[0]?.text).toBe('const variable');
   });
 
   it('should return empty array for no headings', () => {
@@ -158,7 +158,7 @@ describe('extractHeadings', () => {
     const headings = extractHeadings(html);
 
     expect(headings).toHaveLength(1);
-    expect(headings[0]!.text).toBe('Section');
+    expect(headings[0]?.text).toBe('Section');
   });
 
   it('should ignore headings without ids', () => {
@@ -166,6 +166,6 @@ describe('extractHeadings', () => {
     const headings = extractHeadings(html);
 
     expect(headings).toHaveLength(1);
-    expect(headings[0]!.text).toBe('With ID');
+    expect(headings[0]?.text).toBe('With ID');
   });
 });
