@@ -15,14 +15,15 @@
   ],
   "author": "llbbl",
   "license": "MIT",
+  "packageManager": "pnpm@10.20.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/llbbl/semantic-docs.git"
+    "url": "https://github.com/llbbl/semantic-docs-nuxt.git"
   },
   "bugs": {
-    "url": "https://github.com/llbbl/semantic-docs/issues"
+    "url": "https://github.com/llbbl/semantic-docs-nuxt/issues"
   },
-  "homepage": "https://github.com/llbbl/semantic-docs#readme",
+  "homepage": "https://github.com/llbbl/semantic-docs-nuxt#readme",
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
@@ -45,18 +46,18 @@
   "dependencies": {
     "@libsql/client": "^0.15.15",
     "@logan/libsql-search": "jsr:^0.1.3",
-    "@logan/logger": "jsr:^1.1.11",
-    "@nuxt/icon": "^1.9.3",
+    "@logan/logger": "jsr:^1.1.12",
+    "@nuxt/icon": "^2.1.0",
     "@tailwindcss/vite": "^4.1.14",
     "clsx": "^2.1.1",
     "marked": "^16.4.0",
-    "nuxt": "^3.16.1",
+    "nuxt": "^4.2.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.14",
     "vue": "^3.5.13"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.2.6",
+    "@biomejs/biome": "^2.3.2",
     "@google/generative-ai": "^0.24.1",
     "@nuxt/test-utils": "^3.16.1",
     "@types/node": "^20.19.21",

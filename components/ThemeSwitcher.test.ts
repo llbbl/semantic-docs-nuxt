@@ -60,7 +60,10 @@ describe('ThemeSwitcher', () => {
 
     // Find and click a theme button (skip the first button which is the toggle)
     const themeButtons = wrapper.findAll('button');
-    await themeButtons[1].trigger('click');
+    const secondButton = themeButtons[1];
+    if (secondButton) {
+      await secondButton.trigger('click');
+    }
 
     // @ts-expect-error - accessing internal ref for testing
     expect(wrapper.vm.isOpen).toBe(false);

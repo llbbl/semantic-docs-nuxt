@@ -141,3 +141,4 @@ To switch providers, update `.env` and ensure API keys are set. The dimension (7
 - Results limit enforcement: 1-20 results
 - Standard rate limit headers (X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset)
 - See `docs/SECURITY.md` for comprehensive security considerations
+- If we have errors with the biome linter, make sure that you fix the linter issues manually rather than running the command to autofix it.

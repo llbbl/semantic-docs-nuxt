@@ -19,8 +19,8 @@ A beautiful, multi-theme documentation site built with Nuxt 3 and powered by [li
 ### 1. Clone or Use as Template
 
 ```bash
-git clone https://github.com/llbbl/semantic-docs.git
-cd semantic-docs
+git clone https://github.com/llbbl/semantic-docs-nuxt.git
+cd semantic-docs-nuxt
 ```
 
 Or use as a template on GitHub.
@@ -302,8 +302,8 @@ MIT
 
 ## Support
 
-- [Issues](https://github.com/llbbl/semantic-docs/issues)
-- [Discussions](https://github.com/llbbl/semantic-docs/discussions)
+- [Issues](https://github.com/llbbl/semantic-docs-nuxt/issues)
+- [Discussions](https://github.com/llbbl/semantic-docs-nuxt/discussions)
 
 ## Credits
 
