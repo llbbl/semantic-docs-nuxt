@@ -64,7 +64,7 @@
     "@vitejs/plugin-vue": "^6.0.3",
     "@vitest/ui": "^3.2.4",
     "@vue/test-utils": "^2.4.6",
-    "h3": "^1.15.4",
+    "h3": "^1.15.6",
     "happy-dom": "^20.3.4",
     "playwright-core": "^1.57.0",
     "tsx": "^4.21.0",
